@@ -1,0 +1,60 @@
+# Dependencies
+node_modules
+
+# Package Managers
+.npm
+.yarn
+.yarn-integrity
+.pnp.*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Services
+.output
+.vercel
+.netlify
+
+# Test
+coverage
+coverage.json
+
+# Build
+dist
+build
+*.tgz
+*.zip
+
+# Cache
+.cache/
+.cache
+.parcel-cache
+.eslintcache
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# System
+.DS_Store
+Thumbs.db
+*.pem
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

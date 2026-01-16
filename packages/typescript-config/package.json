@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@repo/typescript-config",
+  "version": "0.0.0",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "formatcheck": "prettier --check .",
+    "format": "prettier --write .",
+    "check": "pnpm formatcheck",
+    "fix": "pnpm format"
+  }
+}

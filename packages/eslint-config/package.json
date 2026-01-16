@@ -1,0 +1,35 @@
+{
+  "private": true,
+  "name": "@repo/eslint-config",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "formatcheck": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint --max-warnings 0",
+    "lintfix": "eslint --fix",
+    "check": "pnpm lint && pnpm formatcheck",
+    "fix": "pnpm format && pnpm lintfix"
+  },
+  "exports": {
+    "./typescript": "./typescript.js"
+  },
+  "peerDependencies": {
+    "eslint": "^9.39.2"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/parser": "^8.51.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsdoc": "^61.5.0",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-redos": "^4.5.0",
+    "eslint-plugin-regexp": "^2.10.0",
+    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-sort": "^4.0.0",
+    "typescript-eslint": "^8.51.0"
+  }
+}

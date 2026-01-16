@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "type-enum": [2, "always"],
+    "header-case": [2, "always", "sentence-case"],
+    "header-max-length": [2, "always", 50],
+    "subject-full-stop": [2, "never", "."],
+    "subject-case": [2, "always", "sentence-case"],
+    "body-leading-blank": [2, "always"],
+    "body-max-line-length": [2, "always", 72],
+    "body-full-stop": [2, "always", "."]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "root",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
+    "formatcheck": "prettier --check ./ && pnpm -r format",
+    "format": "prettier --write ./ && pnpm -r format",
+    "lint": "pnpm -r lint",
+    "check": "pnpm formatcheck && pnpm -r check",
+    "fix": "pnpm -r fix",
+    "test": "pnpm -r test",
+    "changeset": "npx @changesets/cli"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "@commitlint/cli": "^20.3.1",
+    "lefthook": "^2.0.13",
+    "prettier": "^3.7.4",
+    "prettier-plugin-jsdoc": "^1.8.0",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@10.27.0",
+  "engines": {
+    "node": "22.x"
+  }
+}

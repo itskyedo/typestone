@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "exclude": ["**/node_modules", "**/build", "**/dist"],
+  "compilerOptions": {
+    "lib": ["es2020", "dom"],
+    "target": "es2020",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "forceConsistentCasingInFileNames": true,
+    "exactOptionalPropertyTypes": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "stripInternal": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "declaration": false,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "pretty": true
+  }
+}

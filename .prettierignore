@@ -1,0 +1,19 @@
+# Version Control
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+# Artifacts
+build
+coverage
+dist
+migrations
+package-lock.json
+pnpm-lock.yaml
+
+# Misc
+CHANGELOG.md
+
+# https://github.com/prettier/prettier/issues/12209
+**/*.mdx
