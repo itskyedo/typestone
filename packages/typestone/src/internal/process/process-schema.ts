@@ -21,7 +21,14 @@ export function processSchema<
   let iteration = iterator.next();
 
   while (!iteration.done) {
-    const issue = iteration.value;
+    let issue: Issue;
+    if (context.exposeInput) {
+      const { input, ...newIssue } = iteration.value;
+      issue = newIssue;
+    } else {
+      issue = iteration.value;
+    }
+
     issues.push(issue);
     if (issue.abort) break;
     iteration = iterator.next();

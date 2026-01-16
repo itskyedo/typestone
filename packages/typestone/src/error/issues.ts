@@ -3,7 +3,7 @@ import { type Path } from '../internal/process/types.ts';
 export interface BaseIssue<TCode extends string> {
   readonly code: TCode;
   readonly message: string;
-  readonly input: unknown;
+  readonly input?: unknown;
   readonly path: Path;
 
   readonly abort?: boolean;
