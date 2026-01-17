@@ -4,13 +4,13 @@ import {
   errorParamToErrorMap,
 } from '../../error/error.ts';
 import { NEVER } from '../../internal/constants/constants.ts';
+import {
+  parseValue,
+  ValueType,
+} from '../../internal/parse-value/parse-value.ts';
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processGenerator } from '../../internal/process/process-generator.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
-import {
-  getValueType,
-  ValueType,
-} from '../../internal/value-type/value-type.ts';
 import { type Schema, type SchemaDef } from '../schema/schema.ts';
 import { type TupleSchema } from './tuple.ts';
 import { type TupleInput, type TupleOutput, type TupleParts } from './types.ts';
@@ -55,40 +55,41 @@ export function tupleDef<
 }
 
 const _process: TupleSchema['_process'] = function* (context) {
-  if (!Array.isArray(context.value)) {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.array) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
       input: context.value,
       expected: ValueType.array,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected an ${ValueType.array}.`,
     });
   }
 
-  if (!this.rest && context.value.length !== this.parts.length) {
+  if (!this.rest && parsed.value.length !== this.parts.length) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_value',
       path: [...context.path, 'length'],
       expected: this.parts.length,
-      received: context.value.length,
-      input: context.value,
+      received: parsed.value.length,
+      input: parsed.value,
       message: `Expected ${this.parts.length} items.`,
     });
-  } else if (this.rest && context.value.length < this.parts.length) {
+  } else if (this.rest && parsed.value.length < this.parts.length) {
     return yield* processIssue(this.errorMap, {
       code: 'too_small',
       path: [...context.path, 'length'],
       expected: this.parts.length,
-      received: context.value.length,
-      input: context.value,
+      received: parsed.value.length,
+      input: parsed.value,
       message: `Expected at least ${this.parts.length} items.`,
     });
   }
 
   const newData: unknown[] = [];
 
-  for (let index = 0; index < context.value.length; index++) {
+  for (let index = 0; index < parsed.value.length; index++) {
     const part = this.parts[index] ?? this.rest;
     if (!part) {
       // Pass length checks so this means rest value is missing
@@ -98,7 +99,7 @@ const _process: TupleSchema['_process'] = function* (context) {
     const partResult = yield* processGenerator(
       part._process({
         ...context,
-        value: context.value[index],
+        value: parsed.value[index],
         path: [...context.path, index],
       }),
     );

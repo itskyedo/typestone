@@ -3,11 +3,11 @@ import {
   type ErrorMap,
   errorParamToErrorMap,
 } from '../../error/error.ts';
-import { processIssue } from '../../internal/process/process-issue.ts';
 import {
-  getValueType,
+  parseValue,
   ValueType,
-} from '../../internal/value-type/value-type.ts';
+} from '../../internal/parse-value/parse-value.ts';
+import { processIssue } from '../../internal/process/process-issue.ts';
 import { type CheckDef } from '../check/check.ts';
 import { type IntegerCheck } from './integer.ts';
 
@@ -32,13 +32,14 @@ export function integerDef(
 }
 
 const _process: IntegerCheck['_process'] = function* (context) {
-  if (!Number.isInteger(context.value)) {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.number || parsed.isInteger !== true) {
     yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
       input: context.value,
       expected: ValueType.integer,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected an ${ValueType.integer}.`,
     });
   }

@@ -4,13 +4,13 @@ import {
   errorParamToErrorMap,
 } from '../../error/error.ts';
 import { NEVER } from '../../internal/constants/constants.ts';
+import {
+  parseValue,
+  ValueType,
+} from '../../internal/parse-value/parse-value.ts';
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processGenerator } from '../../internal/process/process-generator.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
-import {
-  getValueType,
-  ValueType,
-} from '../../internal/value-type/value-type.ts';
 import { type Schema, type SchemaDef } from '../schema/schema.ts';
 import { type RecordSchema } from './record.ts';
 import {
@@ -55,24 +55,21 @@ export function recordDef<
 }
 
 const _process: RecordSchema['_process'] = function* (context) {
-  if (
-    !context.value ||
-    Array.isArray(context.value) ||
-    typeof context.value !== 'object'
-  ) {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.object) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
-      input: context.value,
+      input: parsed.value,
       expected: ValueType.object,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected an ${ValueType.object}.`,
     });
   }
 
   const newData: Record<any, unknown> = {};
 
-  for (const [key, value] of Object.entries(context.value)) {
+  for (const [key, value] of Object.entries(parsed.value)) {
     const keyResult = yield* processGenerator(
       this.options[0]._process({
         ...context,

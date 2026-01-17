@@ -3,12 +3,12 @@ import {
   type ErrorMap,
   errorParamToErrorMap,
 } from '../../error/error.ts';
+import {
+  parseValue,
+  ValueType,
+} from '../../internal/parse-value/parse-value.ts';
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
-import {
-  getValueType,
-  ValueType,
-} from '../../internal/value-type/value-type.ts';
 import { type SchemaDef } from '../schema/schema.ts';
 import { type StringSchema } from './string.ts';
 
@@ -32,13 +32,14 @@ export function stringDef(
 }
 
 const _process: StringSchema['_process'] = function* (context) {
-  if (typeof context.value !== 'string') {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.string) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
       input: context.value,
       expected: ValueType.string,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected a ${ValueType.string}.`,
     });
   }

@@ -5,13 +5,13 @@ import {
   errorParamToErrorMap,
 } from '../../error/error.ts';
 import { NEVER } from '../../internal/constants/constants.ts';
+import {
+  parseValue,
+  ValueType,
+} from '../../internal/parse-value/parse-value.ts';
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processGenerator } from '../../internal/process/process-generator.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
-import {
-  getValueType,
-  ValueType,
-} from '../../internal/value-type/value-type.ts';
 import { type Schema, type SchemaDef } from '../schema/schema.ts';
 import { type ArraySchema } from './array.ts';
 
@@ -44,21 +44,22 @@ export function arrayDef<const TSchema extends Schema>(
 }
 
 const _process: ArraySchema['_process'] = function* (context) {
-  if (!Array.isArray(context.value)) {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.array) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
       input: context.value,
       expected: ValueType.array,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected an ${ValueType.array}.`,
     });
   }
 
   const newData: any[] = [];
 
-  for (let i = 0; i < context.value.length; i++) {
-    const item: unknown = context.value[i];
+  for (let i = 0; i < parsed.value.length; i++) {
+    const item: unknown = parsed.value[i];
     const result = yield* processGenerator(
       this.inner._process({
         ...context,

@@ -3,12 +3,12 @@ import {
   type ErrorMap,
   errorParamToErrorMap,
 } from '../../error/error.ts';
+import {
+  parseValue,
+  ValueType,
+} from '../../internal/parse-value/parse-value.ts';
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
-import {
-  getValueType,
-  ValueType,
-} from '../../internal/value-type/value-type.ts';
 import { type SchemaDef } from '../schema/schema.ts';
 import { type NullSchema } from './null.ts';
 
@@ -30,13 +30,14 @@ export function nullDef(error: ErrorHandlerParameter<NullErrorMap>): NullDef {
 }
 
 const _process: NullSchema['_process'] = function* (context) {
-  if (context.value !== null) {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.null) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
       input: context.value,
       expected: ValueType.null,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected ${ValueType.null}.`,
     });
   }

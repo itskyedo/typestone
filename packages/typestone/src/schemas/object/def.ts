@@ -4,13 +4,13 @@ import {
   errorParamToErrorMap,
 } from '../../error/error.ts';
 import { NEVER } from '../../internal/constants/constants.ts';
+import {
+  parseValue,
+  ValueType,
+} from '../../internal/parse-value/parse-value.ts';
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processGenerator } from '../../internal/process/process-generator.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
-import {
-  getValueType,
-  ValueType,
-} from '../../internal/value-type/value-type.ts';
 import { type Schema, type SchemaDef } from '../schema/schema.ts';
 import { type ObjectSchema } from './object.ts';
 import {
@@ -60,17 +60,14 @@ export function objectDef<
 }
 
 const _process: ObjectSchema['_process'] = function* (context) {
-  if (
-    !context.value ||
-    Array.isArray(context.value) ||
-    typeof context.value !== 'object'
-  ) {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.object) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
-      input: context.value,
+      input: parsed.value,
       expected: ValueType.object,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected an ${ValueType.object}.`,
     });
   }
@@ -79,7 +76,7 @@ const _process: ObjectSchema['_process'] = function* (context) {
   let errored: boolean = false;
 
   for (const [key, targetSchema] of Object.entries(this.shape)) {
-    const value = context.value[key as keyof typeof context.value];
+    const value = parsed.value[key as keyof typeof parsed.value];
     if (this.requiredKeys.has(key) && typeof value === 'undefined') {
       errored = true;
       yield* processIssue(this.errorMap, {
@@ -108,7 +105,7 @@ const _process: ObjectSchema['_process'] = function* (context) {
     }
   }
 
-  for (const [key, value] of Object.entries(context.value)) {
+  for (const [key, value] of Object.entries(parsed.value)) {
     if (Object.prototype.hasOwnProperty.call(this.shape, key)) {
       continue;
     }
@@ -135,7 +132,7 @@ const _process: ObjectSchema['_process'] = function* (context) {
       yield* processIssue(this.errorMap, {
         code: 'unrecognized_key',
         path: [...context.path, key],
-        input: context.value,
+        input: parsed.value,
         message: `Unrecognized key: "${key}".`,
       });
     } else if (this.behavior === 'loose') {

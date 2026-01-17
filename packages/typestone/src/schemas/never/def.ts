@@ -3,11 +3,11 @@ import {
   type ErrorMap,
   errorParamToErrorMap,
 } from '../../error/error.ts';
-import { processIssue } from '../../internal/process/process-issue.ts';
 import {
-  getValueType,
+  parseValue,
   ValueType,
-} from '../../internal/value-type/value-type.ts';
+} from '../../internal/parse-value/parse-value.ts';
+import { processIssue } from '../../internal/process/process-issue.ts';
 import { type SchemaDef } from '../schema/schema.ts';
 import { type NeverSchema } from './never.ts';
 
@@ -31,12 +31,13 @@ export function neverDef(
 }
 
 const _process: NeverSchema['_process'] = function* (context) {
+  const parsed = parseValue(context.value);
   return yield* processIssue(this.errorMap, {
     code: 'invalid_type',
     path: context.path,
     input: context.value,
     expected: ValueType.never,
-    received: getValueType(context.value),
+    received: parsed.type,
     message: `Expected ${ValueType.never}.`,
   });
 };

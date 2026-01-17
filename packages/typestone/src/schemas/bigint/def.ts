@@ -3,12 +3,12 @@ import {
   type ErrorMap,
   errorParamToErrorMap,
 } from '../../error/error.ts';
+import {
+  parseValue,
+  ValueType,
+} from '../../internal/parse-value/parse-value.ts';
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
-import {
-  getValueType,
-  ValueType,
-} from '../../internal/value-type/value-type.ts';
 import { type SchemaDef } from '../schema/schema.ts';
 import { type BigintSchema } from './bigint.ts';
 
@@ -32,13 +32,14 @@ export function bigintDef(
 }
 
 const _process: BigintSchema['_process'] = function* (context) {
-  if (typeof context.value !== ValueType.bigint) {
+  const parsed = parseValue(context.value);
+  if (parsed.type !== ValueType.bigint) {
     return yield* processIssue(this.errorMap, {
       code: 'invalid_type',
       path: context.path,
       input: context.value,
       expected: ValueType.bigint,
-      received: getValueType(context.value),
+      received: parsed.type,
       message: `Expected a ${ValueType.bigint}.`,
     });
   }
