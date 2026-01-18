@@ -11,6 +11,7 @@ import {
 import { processChecks } from '../../internal/process/process-checks.ts';
 import { processGenerator } from '../../internal/process/process-generator.ts';
 import { processIssue } from '../../internal/process/process-issue.ts';
+import { hasOwnProperty } from '../../internal/type-utils/has-own-property.ts';
 import { type Schema, type SchemaDef } from '../schema/schema.ts';
 import { type ObjectSchema } from './object.ts';
 import {
@@ -106,7 +107,7 @@ const _process: ObjectSchema['_process'] = function* (context) {
   }
 
   for (const [key, value] of Object.entries(parsed.value)) {
-    if (Object.prototype.hasOwnProperty.call(this.shape, key)) {
+    if (hasOwnProperty(this.shape, key)) {
       continue;
     }
 

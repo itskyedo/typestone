@@ -1,3 +1,4 @@
+import { hasOwnProperty } from '../../internal/type-utils/has-own-property.ts';
 import { type EnumDef } from './def.ts';
 import { type EnumSchema } from './enum.ts';
 import { type EnumMap, type EnumOptions } from './types.ts';
@@ -15,7 +16,7 @@ export function getEnumOption<const TOptions extends EnumOptions>(
   this: EnumDef<TOptions>,
   value: string,
 ): TOptions[number] | null {
-  return Object.prototype.hasOwnProperty.call(this.enum, value)
+  return hasOwnProperty(this.enum, value)
     ? this.enum[value as keyof EnumMap<TOptions>]
     : null;
 }
