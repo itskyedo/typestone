@@ -1,0 +1,5 @@
+---
+'typestone': minor
+---
+
+Creates NanSchema

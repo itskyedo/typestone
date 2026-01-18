@@ -33,6 +33,7 @@ export * from './schemas/enum/index.ts';
 export * from './schemas/intersection/index.ts';
 export * from './schemas/lazy/index.ts';
 export * from './schemas/literal/index.ts';
+export * from './schemas/nan/index.ts';
 export * from './schemas/never/index.ts';
 export * from './schemas/null/index.ts';
 export * from './schemas/nullable/index.ts';
