@@ -1,5 +1,3 @@
-import { hasProperty } from './has-property.ts';
-
 /**
  * Checks if a value is promise-like (an object matching the shape of a
  * promise).
@@ -10,8 +8,9 @@ import { hasProperty } from './has-property.ts';
 export function isPromiseLike(value: unknown): value is Promise<unknown> {
   return Boolean(
     value &&
-    hasProperty(value, 'then') &&
-    hasProperty(value, 'catch') &&
+    typeof value === 'object' &&
+    'then' in value &&
+    'catch' in value &&
     typeof value.then === 'function' &&
     typeof value.catch === 'function',
   );
