@@ -1,6 +1,7 @@
 import { type Check } from '../../checks/check/check.ts';
 import { type RawInput, type RawOutput } from '../../def/def.ts';
-import { type Refine, type Schema } from '../../schemas/schema/schema.ts';
+import { type Schema } from '../../schemas/schema/schema.ts';
+import { type Refine } from './types.ts';
 
 export type CheckMethod = <
   const TSchema extends Schema,

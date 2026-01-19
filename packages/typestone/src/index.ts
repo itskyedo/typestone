@@ -22,6 +22,7 @@ export * from './def/index.ts';
 export * from './error/index.ts';
 export * from './functions/def/index.ts';
 export * from './functions/wrap/index.ts';
+export * from './methods/check/index.ts';
 export * from './schemas/any/index.ts';
 export * from './schemas/array/index.ts';
 export * from './schemas/bigint/index.ts';

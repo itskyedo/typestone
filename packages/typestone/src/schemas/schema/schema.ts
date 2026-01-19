@@ -80,12 +80,6 @@ export type ReplaceSchemaTypes<TSchema extends Schema, TInput, TOutput> = (Omit<
   TypePropsDefinition<TInput, TOutput> &
   StandardSchema<TInput, TOutput>) & {};
 
-export type Refine<TSchema extends Schema, TNext> = ReplaceSchemaTypes<
-  TSchema,
-  TNext,
-  TNext
-> & {};
-
 export interface Schema<
   TInput = unknown,
   TOutput = TInput,
