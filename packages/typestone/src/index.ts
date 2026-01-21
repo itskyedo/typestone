@@ -7,6 +7,7 @@ export * from './checks/ends-with/index.ts';
 export * from './checks/eq/index.ts';
 export * from './checks/gt/index.ts';
 export * from './checks/gte/index.ts';
+export * from './checks/instance/index.ts';
 export * from './checks/integer/index.ts';
 export * from './checks/lt/index.ts';
 export * from './checks/lte/index.ts';
