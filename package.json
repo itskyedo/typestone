@@ -2,7 +2,6 @@
   "private": true,
   "name": "root",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "build": "pnpm -r build",
     "dev": "pnpm -r dev",
     "formatcheck": "prettier --check ./ && pnpm -r format",
@@ -21,7 +20,7 @@
     "prettier-plugin-jsdoc": "^1.8.0",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8",
   "engines": {
     "node": "22.x"
   }
