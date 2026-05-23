@@ -4,7 +4,20 @@ export type Path = PropertyKey[];
 
 export type ProcessMode = 'encode' | 'decode';
 
-export interface ProcessContext<TValue, TMode extends ProcessMode> {
+export interface ProcessOptions {
+  /**
+   * When `true`, this will expose the `input` value for all issues.
+   *
+   * This should be used with caution as exposing the input value can cause
+   * sensitive information to be leaked.
+   */
+  readonly exposeInput?: boolean;
+}
+
+export interface ProcessContext<
+  TValue,
+  TMode extends ProcessMode,
+> extends ProcessOptions {
   readonly value: TValue;
   readonly path: Path;
   readonly mode: TMode;
